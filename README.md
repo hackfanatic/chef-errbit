@@ -20,10 +20,11 @@ Just to install the Errbit app, include the following in your wrapper cookbook's
 
     include_recipe "errbit"
 
-Or include it in your run_list
+Or include it in your run\_list
 
     'recipe[errbit]'
 
+If you wish to seed the MongoDB instance with the default admin account, add 'recipe[errbit:bootstrap]' to the run\_list, after 'recipe[errbit]'. The recipe will be removed on the next chef run.
 
 License and Author
 ==================
