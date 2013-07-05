@@ -4,17 +4,18 @@ This cookbook is designed to be able to run [Errbit](http://github.com/errbit/er
 Its github is at [chef-errbit](https://github.com/klamontagne/chef-errbit)
 
 # Requirements
+==============
 
 The following Opscode cookbooks are dependencies:
 
 * git
-* unicorn
 * apt
 * nginx
 
 You also need a MongoDB installation, such as with the [mongodb cookbook](https://github.com/edelight/chef-mongodb).
 
 # Usage
+=======
 
 Just to install the Errbit app, include the following in your wrapper cookbook's recipe
 
@@ -23,6 +24,8 @@ Just to install the Errbit app, include the following in your wrapper cookbook's
 Or include it in your run\_list
 
     'recipe[errbit]'
+
+If you have other installations of rbenv on the node, you need to edit the node's user_installs as described in [chef-rbenv's documentation](https://github.com/fnichol/chef-rbenv#-rbenv-installed-for-a-specific-user-with-rubies).
 
 If you wish to seed the MongoDB instance with the default admin account, add 'recipe[errbit:bootstrap]' to the run\_list, after 'recipe[errbit]'. The recipe will be removed on the next chef run.
 
