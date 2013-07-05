@@ -5,8 +5,6 @@ Its github is at [chef-errbit](https://github.com/klamontagne/chef-errbit)
 
 # Requirements
 
-Developed using chef 10.14.0 and it should work with higher versions. But not tested against chef 11 family.
-
 The following Opscode cookbooks are dependencies:
 
 * git
@@ -24,7 +22,7 @@ Just to install the Errbit app, include the following in your wrapper cookbook's
 
 Or include it in your run_list
 
-    'recpie[errbit]'
+    'recipe[errbit]'
 
 
 License and Author
