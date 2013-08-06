@@ -47,7 +47,7 @@ service "unicorn_#{node['errbit']['name']}" do
   restart_command "/etc/init.d/unicorn_#{node['errbit']['name']} restart"
   status_command  "/etc/init.d/unicorn_#{node['errbit']['name']} status"
   supports :start => true, :stop => true, :restart => true, :status => true
-  action :nothing
+  action [ :enable, :start]
 end
 
 
