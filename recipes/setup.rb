@@ -187,7 +187,7 @@ template "#{node['nginx']['dir']}/sites-available/#{node['errbit']['name']}" do
   owner "root"
   group "root"
   mode 00644
-  # variables( server_names: ['example.com', 'www.example.com'] )
+  variables( :server_names => node['errbit']['config']['server_names'] )
 end
 
 nginx_site node['errbit']['name'] do

@@ -25,6 +25,8 @@ Or include it in your run\_list
 
     'recipe[errbit]'
 
+Set the server name you wish to use for nginx in the attribute `node['errbit']['config']['server_names']` array.
+
 If you have other installations of rbenv on the node, you need to edit the node's user_installs as described in [chef-rbenv's documentation](https://github.com/fnichol/chef-rbenv#-rbenv-installed-for-a-specific-user-with-rubies).
 
 If you wish to seed the MongoDB instance with the default admin account, add 'recipe[errbit:bootstrap]' to the run\_list, after 'recipe[errbit]'. The recipe will be removed on the next chef run.
