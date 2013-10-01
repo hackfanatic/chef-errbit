@@ -1,3 +1,6 @@
 <%= @params[:environment] %>:
-  host: <%= @params[:host] %>
-  database: <%= @params[:database] %>
+  sessions:
+    default:
+    hosts: 
+      - <%= @params[:host] %>
+    database: <%= @params[:database] %>
