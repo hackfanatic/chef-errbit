@@ -164,7 +164,7 @@ deploy_revision node['errbit']['deploy_to'] do
     "config/mongoid.yml" => "config/mongoid.yml"
   )
   environment 'RAILS_ENV' => node['errbit']['environment'], 'SECRET_TOKEN' => node['errbit']['secret_token']
-  shallow_clone true
+  shallow_clone false
   action :deploy #:deploy or :rollback or :force_deploy
 
   before_restart do
