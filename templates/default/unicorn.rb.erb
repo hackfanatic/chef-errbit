@@ -4,11 +4,7 @@ user "<%= node['errbit']['user'] %>"
 
 working_directory "<%= node['errbit']['deploy_to']%>/current"
 
-# listen on both a Unix domain socket and a TCP port,
-# use a shorter backlog for quicker failover when busy
-
 listen "<%= node['errbit']['deploy_to']%>/shared/sockets/unicorn.sock", :backlog => <%= node[:errbit][:unicorn][:backlog] %>
-listen 8080, :tcp_nopush => true
 
 timeout <%= node[:errbit][:unicorn][:worker_timeout] %>
 
