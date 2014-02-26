@@ -155,9 +155,11 @@ deploy_revision node['errbit']['deploy_to'] do
       to "#{node['errbit']['deploy_to']}/shared/vendor_bundle"
     end
     common_groups = %w{development test cucumber staging production}
-    execute "bundle install --deployment --without #{(common_groups - ([node['errbit']['environment']])).join(' ')}" do
-      ignore_failure true
+    rbenv_script "bundle install" do
+      user node['errbit']['user']
+      group node['errbit']['group']
       cwd release_path
+      code "bundle install --deployment --without #{(common_groups - ([node['errbit']['environment']])).join(' ')}"
     end
   end
 
@@ -173,12 +175,11 @@ deploy_revision node['errbit']['deploy_to'] do
   before_restart do
 
     Chef::Log.info "*" * 20 + "COMPILING ASSETS" + "*" * 20
-    execute "asset_precompile" do
-      cwd release_path
+    rbenv_script "asset_precompile" do
       user node['errbit']['user']
       group node['errbit']['group']
-      command "bundle exec rake assets:precompile --trace"
-      environment ({'RAILS_ENV' => node['errbit']['environment']})
+      cwd release_path
+      code "bundle exec rake assets:precompile --trace RAILS_ENV=#{node['errbit']['environment']}"
     end
   end
   # git_ssh_wrapper "wrap-ssh4git.sh"
