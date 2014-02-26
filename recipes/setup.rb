@@ -159,7 +159,7 @@ deploy_revision node['errbit']['deploy_to'] do
       user node['errbit']['user']
       group node['errbit']['group']
       cwd release_path
-      code "bundle install --deployment --without #{(common_groups - ([node['errbit']['environment']])).join(' ')}"
+      code "bundle install --jobs=3 --deployment --without #{(common_groups - ([node['errbit']['environment']])).join(' ')}"
     end
   end
 
