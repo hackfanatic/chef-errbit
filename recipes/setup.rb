@@ -23,6 +23,10 @@ include_recipe "build-essential"
 
 include_recipe "git"
 include_recipe "nginx"
+include_recipe "mongodb::default"
+
+mongodb_instance "mongodb" do
+end
 
 group node['errbit']['group']
 
