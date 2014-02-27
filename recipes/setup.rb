@@ -131,6 +131,7 @@ template "#{node['errbit']['deploy_to']}/shared/config/config.yml" do
     smtp_domain: node['errbit']['config']['smtp_domain'],
     smtp_port: node['errbit']['config']['smtp_port'],
     smtp_username: node['errbit']['config']['smtp_username'],
+    smtp_authentication: node['errbit']['config']['smtp_authentication'],
     smtp_password: node['errbit']['config']['smtp_password']
   })
 end

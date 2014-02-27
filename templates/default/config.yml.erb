@@ -77,7 +77,7 @@ smtp_settings:
   :address:              <%= @params[:smtp_address]%>
   :domain:               <%= @params[:smtp_domain]%>
   :port:                 <%= @params[:smtp_port]%>
-  :authentication:       :plain, :login, :cram_md5
+  :authentication:       <%= @params[:smtp_authentication] %>
   :enable_starttls_auto: true
   :user_name:            <%= @params[:smtp_username] %>
   :password:             <%= @params[:smtp_password] %>
