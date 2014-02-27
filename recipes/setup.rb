@@ -126,7 +126,12 @@ template "#{node['errbit']['deploy_to']}/shared/config/config.yml" do
     github_authentication: node['errbit']['config']['github_authentication'],
     github_client_id: node['errbit']['config']['github_client_id'],
     github_secret: node['errbit']['config']['github_secret'],
-    github_access_scope: node['errbit']['config']['github_access_scope']
+    github_access_scope: node['errbit']['config']['github_access_scope'],
+    smtp_address: node['errbit']['config']['smtp_address'],
+    smtp_domain: node['errbit']['config']['smtp_domain'],
+    smtp_port: node['errbit']['config']['smtp_port'],
+    smtp_username: node['errbit']['config']['smtp_username'],
+    smtp_password: node['errbit']['config']['smtp_password']
   })
 end
 
