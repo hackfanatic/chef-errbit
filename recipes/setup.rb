@@ -26,6 +26,7 @@ include_recipe "nginx"
 include_recipe "mongodb::default"
 
 mongodb_instance "mongodb" do
+  dbpath node['mongodb']['config']['dbpath']
 end
 
 group node['errbit']['group']
