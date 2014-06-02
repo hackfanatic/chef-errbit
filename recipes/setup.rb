@@ -61,6 +61,8 @@ end.run_action(:run)
   r.run_action(:install)
 end
 
+include_recipe "ruby_build"
+
 # Install appropriate Ruby with rbenv
 ruby_build_ruby node['errbit']['install_ruby'] do
   prefix_path "/usr/local/"
