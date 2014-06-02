@@ -1,4 +1,13 @@
-
+# Exporting the SECRET_TOKEN env var
+require 'securerandom'
+secret_token = SecureRandom.hex(64)
+execute "set SECRET_TOKEN var" do
+  user node['errbit']['user']
+  group node['errbit']['group']
+  cwd "#{node['errbit']['deploy_to']}/current"
+  command "echo \"Errbit::Application.config.secret_token = '$(bundle exec rake secret)'\" > config/initializers/__secret_token.rb"
+  not_if "grep secret_token config/initializers/__secret_token.rb"
+end
 
 Chef::Log.info "-" * 70
 Chef::Log.info "Checking to bootstrap the admin user"

@@ -41,14 +41,6 @@ user node['errbit']['user'] do
   system false
 end
 
-# Exporting the SECRET_TOKEN env var
-secret_token = rand(8**256).to_s(36).ljust(8,'a')[0..150]
-execute "set SECRET_TOKEN var" do
-  user node['errbit']['user']
-  command "echo 'export SECRET_TOKEN=#{secret_token}' >> /home/#{node['errbit']['user']}/.bash_profile"
-  not_if "grep SECRET_TOKEN /home/#{node['errbit']['user']}/.bash_profile"
-end
-
 execute "update sources list" do
   command "apt-get update"
   action :nothing
@@ -176,7 +168,7 @@ deploy_revision node['errbit']['deploy_to'] do
     "config/config.yml" => "config/config.yml",
     "config/mongoid.yml" => "config/mongoid.yml"
   )
-  environment 'RAILS_ENV' => node['errbit']['environment'], 'SECRET_TOKEN' => node['errbit']['secret_token']
+  environment 'RAILS_ENV' => node['errbit']['environment']
   shallow_clone false
   action :deploy #:deploy or :rollback or :force_deploy
 
