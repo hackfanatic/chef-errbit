@@ -63,12 +63,12 @@ end
 
 include_recipe "ruby_build"
 
-# Install appropriate Ruby with rbenv
+# Install appropriate Ruby
 ruby_build_ruby node['errbit']['install_ruby'] do
   prefix_path "/usr/local/"
 end
 
-# Install required Ruby Gems(via rbenv)
+# Install required Ruby Gems
 gem_package "bundler" do
   gem_binary "/usr/local/bin/gem"
   options "--no-ri --no-rdoc"
@@ -163,11 +163,11 @@ deploy_revision node['errbit']['deploy_to'] do
       to "#{node['errbit']['deploy_to']}/shared/vendor_bundle"
     end
     common_groups = %w{development test cucumber staging production}
-    rbenv_script "bundle install" do
+    execute "bundle install" do
       user node['errbit']['user']
       group node['errbit']['group']
       cwd release_path
-      code "bundle install --jobs=3 --deployment --without #{(common_groups - ([node['errbit']['environment']])).join(' ')}"
+      command "bundle install --jobs=3 --deployment --without #{(common_groups - ([node['errbit']['environment']])).join(' ')}"
     end
   end
 
@@ -183,11 +183,11 @@ deploy_revision node['errbit']['deploy_to'] do
   before_restart do
 
     Chef::Log.info "*" * 20 + "COMPILING ASSETS" + "*" * 20
-    rbenv_script "asset_precompile" do
+    execute "asset_precompile" do
       user node['errbit']['user']
       group node['errbit']['group']
       cwd release_path
-      code "bundle exec rake assets:precompile --trace RAILS_ENV=#{node['errbit']['environment']}"
+      command "bundle exec rake assets:precompile --trace RAILS_ENV=#{node['errbit']['environment']}"
     end
   end
   # git_ssh_wrapper "wrap-ssh4git.sh"
