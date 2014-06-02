@@ -72,6 +72,13 @@ gem_package "bundler" do
   options "--no-ri --no-rdoc"
 end
 
+# update all gems, is required for ubuntu 13.04 and 13.10
+execute "gem update" do
+  command <<-EOS
+    gem update --system
+  EOS
+end
+
 directory node['errbit']['deploy_to'] do
   owner node['errbit']['user']
   group node['errbit']['group']
