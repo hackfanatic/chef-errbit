@@ -49,29 +49,6 @@ execute "set SECRET_TOKEN var" do
   not_if "grep SECRET_TOKEN /home/#{node['errbit']['user']}/.bash_profile"
 end
 
-# setup rbenv (after git user setup)
-%w{ ruby_build rbenv::user_install }.each do |requirement|
-  include_recipe requirement
-end
-
-# Install appropriate Ruby with rbenv
-rbenv_ruby node['errbit']['install_ruby'] do
-  action :install
-  user node['errbit']['user']
-end
-
-# Set as the rbenv default ruby
-rbenv_global node['errbit']['install_ruby'] do
-  user node['errbit']['user']
-end
-
-# Install required Ruby Gems(via rbenv)
-rbenv_gem "bundler" do
-  action :install
-  user node['errbit']['user']
-  rbenv_version node['errbit']['install_ruby']
-end
-
 execute "update sources list" do
   command "apt-get update"
   action :nothing
@@ -82,6 +59,17 @@ end.run_action(:run)
     action :nothing
   end
   r.run_action(:install)
+end
+
+# Install appropriate Ruby with rbenv
+ruby_build_ruby node['errbit']['install_ruby'] do
+  prefix_path "/usr/local/"
+end
+
+# Install required Ruby Gems(via rbenv)
+gem_package "bundler" do
+  gem_binary "/usr/local/bin/gem"
+  options "--no-ri --no-rdoc"
 end
 
 directory node['errbit']['deploy_to'] do
