@@ -28,9 +28,12 @@ default['errbit']['config']['enforce_ssl']                        = false
 default['errbit']['config']['email_from']                         = "errbit@example.com"
 default['errbit']['config']['per_app_email_at_notices']           = false
 default['errbit']['config']['email_at_notices']                   = [1, 10, 100]
+default['errbit']['config']['per_app_notify_at_notices']          = false
+default['errbit']['config']['notify_at_notices']                  = [1, 10, 25, 50, 100]
 default['errbit']['config']['confirm_resolve_err']                = true
 default['errbit']['config']['user_has_username']                  = false
 default['errbit']['config']['allow_comments_with_issue_tracker']  = true
+default['errbit']['config']['display_internal_errors']  		  = true
 default['errbit']['config']['use_gravatar']                       = true
 default['errbit']['config']['gravatar_default']                   = "identicon"
 
