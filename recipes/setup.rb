@@ -47,18 +47,6 @@ user node['errbit']['user'] do
   system false
 end
 
-<<<<<<< HEAD
-execute "update sources list" do
-  command "apt-get update"
-  action :nothing
-end.run_action(:run)
-
-%w(libxml2-dev libxslt1-dev libcurl4-gnutls-dev).each do |pkg|
-  r = package pkg do
-    action :nothing
-  end
-  r.run_action(:install)
-=======
 # Ensure nginx can read within this directory
 directory home_dir do
   mode 0701
@@ -84,7 +72,6 @@ end
 rbenv_gem "bundler" do
   action :install
   user node['errbit']['user']
->>>>>>> upstream/master
 end
 
 include_recipe "ruby_build"
@@ -129,40 +116,6 @@ end
   end
 end
 
-<<<<<<< HEAD
-# errbit config.yml
-template "#{node['errbit']['deploy_to']}/shared/config/config.yml" do
-  source "config.yml.erb"
-  owner node['errbit']['user']
-  group node['errbit']['group']
-  mode 00644
-  variables(params: {
-    host: node['errbit']['config']['host'],
-    enforce_ssl: node['errbit']['config']['enforce_ssl'],
-    email_from: node['errbit']['config']['email_from'],
-    per_app_email_at_notices: node['errbit']['config']['per_app_email_at_notices'],
-    email_at_notices: node['errbit']['config']['email_at_notices'],
-    confirm_resolve_err: node['errbit']['config']['confirm_resolve_err'],
-    user_has_username: node['errbit']['config']['user_has_username'],
-    allow_comments_with_issue_tracker: node['errbit']['config']['allow_comments_with_issue_tracker'],
-    use_gravatar: node['errbit']['config']['use_gravatar'],
-    gravatar_default: node['errbit']['config']['gravatar_default'],
-    github_authentication: node['errbit']['config']['github_authentication'],
-    github_client_id: node['errbit']['config']['github_client_id'],
-    github_secret: node['errbit']['config']['github_secret'],
-    github_access_scope: node['errbit']['config']['github_access_scope'],
-    smtp_address: node['errbit']['config']['smtp_address'],
-    smtp_domain: node['errbit']['config']['smtp_domain'],
-    smtp_port: node['errbit']['config']['smtp_port'],
-    smtp_username: node['errbit']['config']['smtp_username'],
-    smtp_authentication: node['errbit']['config']['smtp_authentication'],
-    smtp_password: node['errbit']['config']['smtp_password']
-  })
-end
-
-template "#{node['errbit']['deploy_to']}/shared/config/mongoid.yml" do
-  source "mongoid.yml.erb"
-=======
 require 'securerandom'
 node.normal_unless['errbit']['config']['secret_key_base'] = SecureRandom.urlsafe_base64(96)
 
@@ -177,7 +130,6 @@ file "#{node['errbit']['deploy_to']}/shared/config/env" do
     end
   }.compact.join("\n") + "\n"
 
->>>>>>> upstream/master
   owner node['errbit']['user']
   group node['errbit']['group']
   mode 0644
@@ -203,20 +155,6 @@ deploy_revision node['errbit']['deploy_to'] do
   symlinks('log' => 'log', 'pids' => 'tmp/pids', 'sockets' => 'tmp/sockets')
 
   before_migrate do
-<<<<<<< HEAD
-    directory "#{release_path}/vendor" do
-      action :create
-    end
-    link "#{release_path}/vendor/bundle" do
-      to "#{node['errbit']['deploy_to']}/shared/vendor_bundle"
-    end
-    common_groups = %w{development test cucumber staging production}
-    execute "bundle install" do
-      user node['errbit']['user']
-      group node['errbit']['group']
-      cwd release_path
-      command "bundle install --jobs=3 --deployment --without #{(common_groups - ([node['errbit']['environment']])).join(' ')}"
-=======
     template "#{release_path}/UserGemfile" do
       source "UserGemfile.erb"
       owner node['errbit']['user']
@@ -230,28 +168,8 @@ deploy_revision node['errbit']['deploy_to'] do
       code "bundle install --system --without '#{common_groups.join ' '}'"
       cwd release_path
       user node['errbit']['user']
->>>>>>> upstream/master
     end
 
-<<<<<<< HEAD
-  symlink_before_migrate nil
-  symlinks(
-    "config/config.yml" => "config/config.yml",
-    "config/mongoid.yml" => "config/mongoid.yml"
-  )
-  environment 'RAILS_ENV' => node['errbit']['environment']
-  shallow_clone false
-  action :deploy #:deploy or :rollback or :force_deploy
-
-  before_restart do
-
-    Chef::Log.info "*" * 20 + "COMPILING ASSETS" + "*" * 20
-    execute "asset_precompile" do
-      user node['errbit']['user']
-      group node['errbit']['group']
-      cwd release_path
-      command "bundle exec rake assets:precompile --trace RAILS_ENV=#{node['errbit']['environment']}"
-=======
     selinux_policy_fcontext "#{release_path}/(app/assets|public)(/.*)?" do
       secontext 'httpd_sys_content_t'
     end
@@ -262,7 +180,6 @@ deploy_revision node['errbit']['deploy_to'] do
       code 'bundle exec rake assets:precompile RAILS_ENV=' + rails_env
       cwd release_path
       user node['errbit']['user']
->>>>>>> upstream/master
     end
   end
 end
