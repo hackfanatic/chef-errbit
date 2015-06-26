@@ -36,28 +36,24 @@ template "/etc/init.d/unicorn_#{node['errbit']['name']}" do
   variables(
     :user => node['errbit']['user'],
     :deploy_to => node['errbit']['deploy_to'],
-    :env => node['errbit']['environment']
+    :env => node['errbit']['config']['rails_env']
   )
 end
 
 service "unicorn_#{node['errbit']['name']}" do
   provider Chef::Provider::Service::Init::Debian
-  start_command   "/etc/init.d/unicorn_#{node['errbit']['name']} start"
-  stop_command    "/etc/init.d/unicorn_#{node['errbit']['name']} stop"
-  restart_command "/etc/init.d/unicorn_#{node['errbit']['name']} restart"
-  status_command  "/etc/init.d/unicorn_#{node['errbit']['name']} status"
-  supports :start => true, :stop => true, :restart => true, :status => true
-  action [ :enable, :start]
-end
+  # start_command   "/etc/init.d/unicorn_#{node['errbit']['name']} start"
+  # stop_command    "/etc/init.d/unicorn_#{node['errbit']['name']} stop"
+  # restart_command "/etc/init.d/unicorn_#{node['errbit']['name']} restart"
+  # status_command  "/etc/init.d/unicorn_#{node['errbit']['name']} status"
+  # supports :start => true, :stop => true, :restart => true, :status => true
+  # action [ :enable, :start]
 
+  supports [:restart, :status]
+  action :enable
 
-# Restarting the unicorn
-service "unicorn_#{node['errbit']['name']}" do
-  action :nothing
-  subscribes :restart, "template[#{node['errbit']['deploy_to']}/shared/config/config.yml]"
   subscribes :restart, "template[/etc/init.d/unicorn_#{node['errbit']['name']}]"
+  subscribes :restart, "template[#{node['errbit']['deploy_to']}/shared/config/env]"
   subscribes :restart, "template[#{node['errbit']['deploy_to']}/shared/config/unicorn.rb]"
-  subscribes :restart, "template[#{node['errbit']['deploy_to']}/shared/config/config.yml]"
-  subscribes :restart, "template[#{node['errbit']['deploy_to']}/shared/config/mongoid.yml]"
   subscribes :restart, "deploy_revision[#{node['errbit']['deploy_to']}]"
 end
